@@ -7,27 +7,29 @@ import {usersDao} from '../../application-context';
 import config from '../../config';
 import {
   AUTHENTICATE_REQUEST,
-  AUTHENTICATE_RESPONSE, AUTHENTICATION_FAILURE,
+  AUTHENTICATE_RESPONSE, AUTHENTICATION_FAILURE, FAILURE,
   FAILURE_RESPONSE,
   SUCCESS,
   VALIDATIONS_ERROR
 } from "../../constants";
 
 export default async (context) => {
-  let response;
+  let response = FAILURE_RESPONSE;
   const {
     email = '',
     password = ''
   } = context[AUTHENTICATE_REQUEST];
   if (!validator.isEmail(email) || validator.isEmpty(password)) {
     response = {
-      status: VALIDATIONS_ERROR
+      status: FAILURE,
+      errorCode: VALIDATIONS_ERROR
     }
   } else {
     const user = await usersDao.getUserByEmailAndPassword(email, password);
     if (!user) {
       response = {
-        status: AUTHENTICATION_FAILURE
+        status: FAILURE,
+        errorCode: AUTHENTICATION_FAILURE
       }
     } else {
       const token = jwt.sign({userId: user._id}, config.jwtSecret);

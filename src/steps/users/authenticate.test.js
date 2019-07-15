@@ -6,7 +6,7 @@ import authenticate from './authenticate';
 import {
   AUTHENTICATE_REQUEST,
   AUTHENTICATE_RESPONSE,
-  AUTHENTICATION_FAILURE,
+  AUTHENTICATION_FAILURE, FAILURE,
   SUCCESS,
   VALIDATIONS_ERROR
 } from '../../constants';
@@ -27,14 +27,16 @@ describe('Tests suite for authenticate step', () => {
     context[AUTHENTICATE_REQUEST] = {};
     await authenticate(context);
     const response = context[AUTHENTICATE_RESPONSE];
-    expect(response.status).to.eq(VALIDATIONS_ERROR);
+    expect(response.status).to.eq(FAILURE);
+    expect(response.errorCode).to.eq(VALIDATIONS_ERROR);
   });
 
   it('Should return AUTHENTICATION_FAILURE JSON if email or password is wrong', async () => {
     context[AUTHENTICATE_REQUEST].email = '1gwinton0@unc.edu';
     await authenticate(context);
     const response = context[AUTHENTICATE_RESPONSE];
-    expect(response.status).to.eq(AUTHENTICATION_FAILURE);
+    expect(response.status).to.eq(FAILURE);
+    expect(response.errorCode).to.eq(AUTHENTICATION_FAILURE);
   });
 
   it('Should return SUCCESS JSON with JWT token if authenticated', async () => {
