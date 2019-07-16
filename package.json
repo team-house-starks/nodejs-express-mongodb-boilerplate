@@ -35,7 +35,7 @@
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "prod": "NODE_ENV=production node build/index.js",
     "test": "NODE_ENV=src nyc --reporter=html mocha --file ./mocha-teardown.js --require @babel/register --require ./chai-config.js --require babel-polyfill 'src/**/**.test.js' --exit",
-    "test:watch": "NODE_ENV=src nyc --reporter=html mocha --file ./mocha-teardown.js --require @babel/register --require ./chai-config.js 'src/**/**.test.js' --exit --watch"
+    "test:watch": "NODE_ENV=src nyc --reporter=html mocha --file ./mocha-teardown.js --require babel-polyfill --require @babel/register --require ./chai-config.js 'src/**/**.test.js' --exit --watch"
   },
   "repository": {
     "type": "git",
